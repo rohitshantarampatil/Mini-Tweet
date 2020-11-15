@@ -79,9 +79,49 @@ class Client:
 					continue      		
 		
 		###Further code in following while true loop
-		# while  True:
-			#Post tweet
-			#
+		while  True:
+			print('select from following options')
+			print()
+			print('1. Post Tweet ')
+			print('2. Profile [Show/Delete my tweets] ')
+			#other options
+			print('write exit to close the program \n')
+			print()	
+			
+			inp = input()	
+			if inp=="exit":
+				self.sock.close()
+				os._exit(0)
+
+			if not check_input_string([inp]):
+				print('Bad input,Try again')
+				continue
+
+			if inp=='1':
+				print('Post Tweet selected')
+				print()
+				print('Type text:',end='')
+				
+				tweet = input()
+
+				if not check_input_string([tweet]):
+					print('Bad input,Try again')
+					print()
+					continue
+
+				message = "POST TWEET{0}{1}".format(SEPARATOR,tweet)
+				self.sock.sendall(message.encode('ascii'))
+				response = self.sock.recv(1024).decode('ascii')
+				if response == "TWEET POST SUCCESS":
+					print('Tweet posted successfully')
+					print()
+					continue
+				else:
+					print('Tweet posting failed')
+					print()
+					continue
+
+
 
 
 def main(host,port):

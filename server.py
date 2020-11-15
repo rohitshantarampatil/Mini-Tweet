@@ -5,6 +5,7 @@ import os
 from pymongo import MongoClient 
 from login import *
 from constants import *
+from utils import *
 
 
 class Server(threading.Thread):
@@ -54,6 +55,7 @@ class ServerSocket(threading.Thread):
 		self.sockname = sockname
 		self.server = server
 		self.db_client = None
+		self.username = None
 	def connect_to_db(self):
 		client = MongoClient('localhost',27017)
 		print("database connected")
@@ -65,9 +67,10 @@ class ServerSocket(threading.Thread):
 
 		while True:
 			message = self.sc.recv(1024).decode('ascii')
-			print("got message")
 			# print(message)
 			if message:
+				print("got message from login screen")
+				print()
 				#LOGIN
 				message = message.split(SEPARATOR)
 				if message[0]=='LOGIN':
@@ -76,17 +79,18 @@ class ServerSocket(threading.Thread):
 						password = message[2]
 						login_success = login(self.db_client.minitweet,username,password)
 						if login_success :
+							self.username = username
 							print('Login successful for user: {0}'.format(username))	
-							message = 'LOGIN SUCCESS'
-							self.sc.send(message.encode('ascii'))
+							response = 'LOGIN SUCCESS'
+							self.sc.send(response.encode('ascii'))
 							break
 						else:
 							print('Login failed for user: {0}'.format(username))
-							message = 'LOGIN FAILED'
-							self.sc.sendall(message.encode('ascii'))
+							response = 'LOGIN FAILED'
+							self.sc.sendall(response.encode('ascii'))
 					except:
-						message = 'LOGIN FAILED'
-						self.sc.sendall(message.encode('ascii'))
+						response = 'LOGIN FAILED'
+						self.sc.sendall(response.encode('ascii'))
 
 				elif message[0]=='REGISTER':
 					try:
@@ -97,15 +101,15 @@ class ServerSocket(threading.Thread):
 						print(register_success)
 						if register_success :
 							print('Registration successful for user: {0}'.format(username))
-							message = 'REGISTRATION SUCCESS'
-							self.sc.send(message.encode('ascii'))
+							response = 'REGISTRATION SUCCESS'
+							self.sc.send(response.encode('ascii'))
 						else:
 							print('Registration failed for user: {0}'.format(username))
-							message = 'REGISTRATION FAILED'
-							self.sc.sendall(message.encode('ascii'))
+							response = 'REGISTRATION FAILED'
+							self.sc.sendall(response.encode('ascii'))
 					except:
-						message = 'REGISTRATION FAILED'
-						self.sc.sendall(message.encode('ascii'))		
+						response = 'REGISTRATION FAILED'
+						self.sc.sendall(response.encode('ascii'))
 
 			else:
 				# Client has closed the socket, exit the thread
@@ -113,19 +117,33 @@ class ServerSocket(threading.Thread):
 				self.sc.close()
 				server.remove_connection(self)
 				return
-			
 
-		# while True:
-		#     message = self.sc.recv(1024).decode('ascii')
-		#     if message:
-		#         pass
 
-		#     else:
-		#         # Client has closed the socket, exit the thread
-		#         print('{} has closed the connection'.format(self.sockname))
-		#         self.sc.close()
-		#         server.remove_connection(self)
-		#         return
+		while True:
+			message = self.sc.recv(1024).decode('ascii')
+			if message:
+				print("got message from screen 2 for user: {0}".format(self.username))
+				message = message.split(SEPARATOR)
+				if message[0]=="POST TWEET":
+					tweet = message[1]
+					post = post_tweet(self.db_client.minitweet,tweet,self.username)
+					if post==True:
+						print("Tweet posted for user : {}".format(self.username))
+						response ="TWEET POST SUCCESS"
+						self.sc.sendall(response.encode('ascii'))
+					else:
+						print("Tweet failed for user : {}".format(self.username))
+						response ="TWEET POST FAILED"
+						self.sc.sendall(response.encode('ascii'))
+				else:
+					print('something else')
+
+			else:
+				# Client has closed the socket, exit the thread
+				print('{} has closed the connection'.format(self.sockname))
+				self.sc.close()
+				server.remove_connection(self)
+				return
 
 
 def exit(server):

@@ -26,7 +26,8 @@ def register(db,username,password):
 		user = {
 		'username':username,
 		'password':password,
-		'last_login':None
+		'last_login':None,
+		'following':None
 		}
 		try:
 			db.users.insert_one(user)
