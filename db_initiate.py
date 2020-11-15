@@ -15,9 +15,12 @@ def add_dummy_tweets(db):
 		'tweet':tweets[i],
 		'username':usernames[i],
 		'hashtags':hashtags[i],
-		'timestamp':timestamps[i]
+		'timestamp':timestamps[i],
+		'retweeted':None,
+		'retweeted_from':None,
 		}
 		db.tweets.insert_one(tweet)
+		print('created tweet's)
 	return True
 
 def add_dummy_users(db):
@@ -29,7 +32,8 @@ def add_dummy_users(db):
 		user = {
 		'username':usernames[i],
 		'password':passwords[i],
-		'last_login':lastlogins[i]
+		'last_login':lastlogins[i],
+		'following':None,
 		}
 		result = db.users.insert_one(user)
 		print('created user- {0}'.format(result))

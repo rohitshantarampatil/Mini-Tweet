@@ -113,7 +113,7 @@ class ServerSocket(threading.Thread):
 				self.sc.close()
 				server.remove_connection(self)
 				return
-
+			
 
 		# while True:
 		#     message = self.sc.recv(1024).decode('ascii')
