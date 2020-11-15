@@ -42,13 +42,13 @@ class Server(threading.Thread):
 		self.connections.remove(connection)
 
 class ServerSocket(threading.Thread):
-	"""
+	'''
 	Supports communications with a connected client.
 	Attributes:
 	    sc (socket.socket): The connected socket.
 	    sockname (tuple): The client socket address.
 	    server (Server): The parent thread.
-	"""
+	'''
 	def __init__(self, sc, sockname, server):
 		super().__init__()
 		self.sc = sc
@@ -58,7 +58,7 @@ class ServerSocket(threading.Thread):
 		self.username = None
 	def connect_to_db(self):
 		client = MongoClient('localhost',27017)
-		print("database connected")
+		print('database connected')
 		return client 
 
 
@@ -69,7 +69,7 @@ class ServerSocket(threading.Thread):
 			message = self.sc.recv(1024).decode('ascii')
 			# print(message)
 			if message:
-				print("got message from login screen")
+				print('got message from login screen')
 				print()
 				#LOGIN
 				message = message.split(SEPARATOR)
@@ -122,18 +122,18 @@ class ServerSocket(threading.Thread):
 		while True:
 			message = self.sc.recv(1024).decode('ascii')
 			if message:
-				print("got message from screen 2 for user: {0}".format(self.username))
+				print('got message from screen 2 for user: {0}'.format(self.username))
 				message = message.split(SEPARATOR)
-				if message[0]=="POST TWEET":
+				if message[0]=='POST TWEET':
 					tweet = message[1]
 					post = post_tweet(self.db_client.minitweet,tweet,self.username)
 					if post==True:
-						print("Tweet posted for user : {}".format(self.username))
-						response ="TWEET POST SUCCESS"
+						print('Tweet posted for user : {}'.format(self.username))
+						response ='TWEET POST SUCCESS'
 						self.sc.sendall(response.encode('ascii'))
 					else:
-						print("Tweet failed for user : {}".format(self.username))
-						response ="TWEET POST FAILED"
+						print('Tweet failed for user : {}'.format(self.username))
+						response ='TWEET POST FAILED'
 						self.sc.sendall(response.encode('ascii'))
 				else:
 					print('something else')
@@ -147,10 +147,10 @@ class ServerSocket(threading.Thread):
 
 
 def exit(server):
-	"""
+	'''
 	Allows the server administrator to shut down the server.
 	Typing 'q' in the command line will close all active connections and exit the application.
-	"""
+	'''
 	while True:
 		ipt = input('')
 		if ipt == 'q':

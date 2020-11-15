@@ -32,7 +32,7 @@ class Client:
 			print('write exit to close the program \n')
 			
 			inp = input()	
-			if inp=="exit":
+			if inp=='exit':
 				self.sock.close()
 				os._exit(0)
 			
@@ -89,7 +89,7 @@ class Client:
 			print()	
 			
 			inp = input()	
-			if inp=="exit":
+			if inp=='exit':
 				self.sock.close()
 				os._exit(0)
 
@@ -109,10 +109,10 @@ class Client:
 					print()
 					continue
 
-				message = "POST TWEET{0}{1}".format(SEPARATOR,tweet)
+				message = 'POST TWEET{0}{1}'.format(SEPARATOR,tweet)
 				self.sock.sendall(message.encode('ascii'))
 				response = self.sock.recv(1024).decode('ascii')
-				if response == "TWEET POST SUCCESS":
+				if response == 'TWEET POST SUCCESS':
 					print('Tweet posted successfully')
 					print()
 					continue
