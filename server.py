@@ -6,6 +6,8 @@ from pymongo import MongoClient
 from login import *
 from constants import *
 from utils import *
+import json
+from bson.json_util import dumps,loads
 
 
 class Server(threading.Thread):
@@ -135,6 +137,10 @@ class ServerSocket(threading.Thread):
 						print('Tweet failed for user : {}'.format(self.username))
 						response ='TWEET POST FAILED'
 						self.sc.sendall(response.encode('ascii'))
+				elif message[0]=='PROFILE':
+					tweet_list = get_tweets(self.db_client.minitweet,self.username)
+					response = dumps(tweet_list)
+					self.sc.sendall(response.encode('ascii'))
 				else:
 					print('something else')
 

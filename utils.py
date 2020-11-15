@@ -3,8 +3,8 @@ import time
 from datetime import datetime
 from termcolor import colored
 import re
-
-
+import json
+from bson.json_util import dumps,loads
 
 def delete_last_lines(n):
     "Use this function to delete the last line in the STDOUT"
@@ -47,3 +47,25 @@ def post_tweet(db,tweet,username):
 
 
 ###############################################################################
+
+################################## Profile Functions #########################
+
+def get_tweets(db,username):
+	tweets = list(db.tweets.find({'username':username}))
+	tweets.sort(key = lambda x:x['timestamp'],reverse =True)
+	lst = [{"tweet":i['tweet'],'_id':i['_id'],'timestamp':i['timestamp']} for i in tweets]
+	return lst
+
+
+	
+
+
+
+# from pymongo import MongoClient
+# client = MongoClient('localhost',27017)
+# db = client.minitweet
+# tweets = get_tweets(db,'rohit')
+# tweets = dumps(tweets)
+# # print(tweets)
+# tweets = loads(tweets)
+# print(tweets[0]['timestamp'])

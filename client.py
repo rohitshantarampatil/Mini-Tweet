@@ -6,6 +6,8 @@ import sys
 import stdiomask
 from constants import *
 from utils import *
+from bson.json_util import dumps,loads
+
 class Client:
 	def __init__(self, host, port):
 		self.host = host
@@ -89,6 +91,8 @@ class Client:
 			print()	
 			
 			inp = input()	
+			print()
+
 			if inp=='exit':
 				self.sock.close()
 				os._exit(0)
@@ -120,6 +124,23 @@ class Client:
 					print('Tweet posting failed')
 					print()
 					continue
+			if inp=='2':
+				print('Profile selected')
+
+				message = 'PROFILE'
+				self.sock.sendall(message.encode('ascii'))
+				print('Showing all tweets,please wait ...')
+				response = self.sock.recv(1024).decode('ascii')
+				response = loads(response)
+				# print("response{0}",response)
+				print()
+				if len(response)==0:
+					print("You haven't posted any tweet yet")
+				else:
+					for i in range(len(response)):
+						print("{0}:{1} \n{2} \n".format(i+1,response[i]['tweet'], response[i]['timestamp'].date()))
+					# print('To delet tweet,type : delete <number>')
+
 
 
 
