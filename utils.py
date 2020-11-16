@@ -56,7 +56,6 @@ def get_tweets(db,username):
 	lst = [{"tweet":i['tweet'],'_id':i['_id'],'timestamp':i['timestamp']} for i in tweets]
 	return lst
 
-<<<<<<< HEAD
 def feed_display(db,username):
 	user = list(db.users.find({'username':username}))
 	dict1 = user[0]
@@ -69,18 +68,6 @@ def feed_display(db,username):
 	lst = [{"tweet":i['tweet'],'_id':i['_id'],'timestamp':i['timestamp']} for i in tweets]
 	print(lst)
 	return lst
-=======
-def del_tweet_by_id(db,tweet_id):
-	try:
-		db.tweets.delete_one({'_id':tweet_id})
-		return True
-	except:
-		return False
-
-	
-
-
->>>>>>> 47c353024fe4961bd8258597a530fe86d597dee2
 
 # from pymongo import MongoClient
 # client = MongoClient('localhost',27017)
