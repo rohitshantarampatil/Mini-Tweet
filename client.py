@@ -87,11 +87,12 @@ class Client:
 			print()
 			print('1. Post Tweet ')
 			print('2. Profile [Show/Delete my tweets] ')
+			print('3. Show User Feed')
 			#other options
 			print('write exit to close the program \n')
 			print()	
 			
-			inp = input()	
+			inp = input()
 			print()
 
 			if inp=='exit':
@@ -130,7 +131,7 @@ class Client:
 
 				message = 'PROFILE'
 				self.sock.sendall(message.encode('ascii'))
-				print('Showing all tweets,please wait ...')
+				print('Showing all tweets, please wait ...')
 				response = self.sock.recv(1024).decode('ascii')
 				response = loads(response)
 				print()
@@ -146,6 +147,24 @@ class Client:
 				else:
 					for i in range(len(response)):
 						print("{0}:{1} \n{2} \n".format(i+1,response[i]['tweet'], response[i]['timestamp'].date()))
+<<<<<<< HEAD
+					# print('To delet tweet,type : delete <number>')
+
+			if inp=='3':
+				print("User Feed will be displayed")
+				message = "ALLUSERFEED"
+				self.sock.sendall(message.encode('ascii'))
+				print("Showing all user feed, please wait ...")
+				response = self.sock.recv(1024).decode('ascii')
+				response = loads(response)
+				# print("response{0}",response)
+				print()
+				if len(response)==0:
+					print("You haven't posted any tweet yet")
+				else:
+					for i in range(len(response)):
+						print("{0}:{1} \n{2} \n".format(i+1,response[i]['tweet'], response[i]['timestamp'].date()))
+=======
 						
 					print('1. Delete tweet')
 					print("2. Back")
@@ -172,6 +191,7 @@ class Client:
 						print()
 
 
+>>>>>>> 47c353024fe4961bd8258597a530fe86d597dee2
 
 
 def main(host,port):

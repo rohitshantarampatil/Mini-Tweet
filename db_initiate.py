@@ -20,20 +20,20 @@ def add_dummy_tweets(db):
 		'retweeted_from':None,
 		}
 		db.tweets.insert_one(tweet)
-		print('created tweet's)
+		print('created tweet')
 	return True
 
 def add_dummy_users(db):
 	usernames = ['Rohit','Anubhav','Harshil']		
 	passwords = ['Rohit','Anubhav','Harshil']
 	lastlogins = [None,None,None]
-
+	following = [None,None,["Rohit"]]
 	for i in range(len(usernames)):
 		user = {
 		'username':usernames[i],
 		'password':passwords[i],
 		'last_login':lastlogins[i],
-		'following':None,
+		'following':following[i],
 		}
 		result = db.users.insert_one(user)
 		print('created user- {0}'.format(result))
