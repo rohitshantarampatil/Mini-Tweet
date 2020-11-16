@@ -60,13 +60,13 @@ def feed_display(db,username):
 	user = list(db.users.find({'username':username}))
 	dict1 = user[0]
 	user_following = dict1['following']
-	print(user_following)
+	#print(user_following)
 	tweets = []
 	for i in user_following:
 		tweets.extend(list(db.tweets.find({'username':i})))
 	tweets.sort(key = lambda x:x['timestamp'],reverse =True)
 	lst = [{"tweet":i['tweet'],'_id':i['_id'],'timestamp':i['timestamp']} for i in tweets]
-	print(lst)
+	#print(lst)
 	return lst
 
 # from pymongo import MongoClient

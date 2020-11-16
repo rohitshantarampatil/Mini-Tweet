@@ -143,12 +143,6 @@ class ServerSocket(threading.Thread):
 					tweet_list = get_tweets(self.db_client.minitweet,self.username)
 					response = dumps(tweet_list)
 					self.sc.sendall(response.encode('ascii'))
-
-				elif message[0] == "ALLUSERFEED":
-					feed = feed_display(self.db_client.minitweet,self.username)
-					response = dumps(feed)
-					self.sc.sendall(response.encode('ascii'))
-
 					#Now waiting for next choice(delete or back)
 					response_mini = self.sc.recv(1024).decode('ascii')
 					response_mini = loads(response_mini)
@@ -163,8 +157,12 @@ class ServerSocket(threading.Thread):
 						else:
 							response_mini = 'DEL TWEET FAILED'
 							self.sc.sendall(response_mini.encode('ascii'))
-				else:
-					print('something else')
+							
+				elif message[0] == "ALLUSERFEED":
+					feed = feed_display(self.db_client.minitweet,self.username)
+					response = dumps(feed)
+					self.sc.sendall(response.encode('ascii'))
+
 
 			else:
 				# Client has closed the socket, exit the thread
