@@ -157,6 +157,10 @@ class ServerSocket(threading.Thread):
 						else:
 							response_mini = 'DEL TWEET FAILED'
 							self.sc.sendall(response_mini.encode('ascii'))
+				elif message[0]=='SHOW FOLLOWERS':
+					show_followers(self.db_client.minitweet, self.username)
+				elif message[0]=='SHOW USERS':
+					show_users(self.db_client.minitweet, self.username)
 				else:
 					print('something else')
 
