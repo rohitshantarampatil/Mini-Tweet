@@ -126,6 +126,7 @@ class ServerSocket(threading.Thread):
 			if message:
 				print('got message from screen 2 for user: {0}'.format(self.username))
 				message = message.split(SEPARATOR)
+				
 				if message[0]=='POST TWEET':
 					tweet = message[1]
 					post = post_tweet(self.db_client.minitweet,tweet,self.username)
@@ -137,10 +138,25 @@ class ServerSocket(threading.Thread):
 						print('Tweet failed for user : {}'.format(self.username))
 						response ='TWEET POST FAILED'
 						self.sc.sendall(response.encode('ascii'))
+				
 				elif message[0]=='PROFILE':
 					tweet_list = get_tweets(self.db_client.minitweet,self.username)
 					response = dumps(tweet_list)
 					self.sc.sendall(response.encode('ascii'))
+					#Now waiting for next choice(delete or back)
+					response_mini = self.sc.recv(1024).decode('ascii')
+					response_mini = loads(response_mini)
+					if response_mini['type']=='BACK':
+						continue
+					else:
+						tweet_id_to_delete = response_mini['_id']
+						deleted = del_tweet_by_id(self.db_client.minitweet, tweet_id_to_delete)
+						if deleted:
+							response_mini = 'DEL TWEET SUCCESS'
+							self.sc.sendall(response_mini.encode('ascii'))
+						else:
+							response_mini = 'DEL TWEET FAILED'
+							self.sc.sendall(response_mini.encode('ascii'))
 				else:
 					print('something else')
 

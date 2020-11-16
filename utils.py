@@ -56,6 +56,12 @@ def get_tweets(db,username):
 	lst = [{"tweet":i['tweet'],'_id':i['_id'],'timestamp':i['timestamp']} for i in tweets]
 	return lst
 
+def del_tweet_by_id(db,tweet_id):
+	try:
+		db.tweets.delete_one({'_id':tweet_id})
+		return True
+	except:
+		return False
 
 	
 

@@ -58,7 +58,7 @@ class Client:
 				message = 'REGISTER{0}{1}{2}{3}'.format(SEPARATOR,username,SEPARATOR,password)
 
 				self.sock.sendall(message.encode('ascii'))
-
+				print()
 				response = self.sock.recv(1024).decode('ascii')
 				if response=='REGISTRATION SUCCESS':
 					print('Registration successfully completed, now please login using your credentials\n')
@@ -73,6 +73,7 @@ class Client:
 				message = 'LOGIN{0}{1}{2}{3}'.format(SEPARATOR,username,SEPARATOR,password)
 				self.sock.sendall(message.encode('ascii'))
 				response = self.sock.recv(1024).decode('ascii')
+				print()
 				if response=='LOGIN SUCCESS':
 					print('Login success\n')
 					break
@@ -132,15 +133,43 @@ class Client:
 				print('Showing all tweets,please wait ...')
 				response = self.sock.recv(1024).decode('ascii')
 				response = loads(response)
-				# print("response{0}",response)
 				print()
+
 				if len(response)==0:
+					print()
 					print("You haven't posted any tweet yet")
+					print()
+					message_mini = {'type':'BACK'}
+					message_mini = dumps(message_mini)
+					self.sock.sendall(message_mini.encode('ascii'))					
+					continue
 				else:
 					for i in range(len(response)):
 						print("{0}:{1} \n{2} \n".format(i+1,response[i]['tweet'], response[i]['timestamp'].date()))
-					# print('To delet tweet,type : delete <number>')
-
+						
+					print('1. Delete tweet')
+					print("2. Back")
+					choice = input()
+					if choice=="1":
+						print("Enter Tweet Number")
+						num = int(input())-1
+						message_mini ={'type':"DEL TWEET",'_id':response[num]['_id']}
+						message_mini = dumps(message_mini)
+						self.sock.sendall(message_mini.encode('ascii'))
+						response_mini = self.sock.recv(1024).decode('ascii')
+						if response_mini=="DEL TWEET SUCCESS":
+							print()
+							print("Tweet deleted successfully")
+							print()
+						else:
+							print()
+							print("Tweet deletion failed")
+							print()
+					elif choice=='2':
+						message_mini = {'type':'BACK'}
+						message_mini = dumps(message_mini)
+						self.sock.sendall(message_mini.encode('ascii'))
+						print()
 
 
 
