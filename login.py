@@ -11,7 +11,7 @@ def login(db,username,password):
 			password_db = user_exist['password']
 			_id= user_exist['_id']
 			if password_db==password:
-				db.users.find_one_and_update({'_id':_id},{'$set':{'last_login': datetime.now()}},upsert=True)
+				db.users.find_one_and_update({'_id':_id},{'$set':{'last_login': datetime.now(),'online':True}},upsert=True)
 				return True
 			else:
 				return False
@@ -27,13 +27,24 @@ def register(db,username,password):
 		'username':username,
 		'password':password,
 		'last_login':None,
-		'following':None
+		'following':None,
+		'followers':None,
+		'online':None
 		}
 		try:
 			db.users.insert_one(user)
 			return True
 		except Exception as e:
 			return e
+
+# def logout(db,username):
+# 	try:
+# 		user_exist = db.users.find_one({'username':username})	
+# 		db.users.find_one_and_update({'_id':_id},{'$set':{'online':False}},upsert=True)
+# 		return True	
+
+# 	except Exception as e:
+# 		return e
 
 def delete_user(db,username,password):
 	try:

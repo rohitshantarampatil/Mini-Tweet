@@ -87,6 +87,7 @@ class Client:
 			print()
 			print('1. Post Tweet ')
 			print('2. Profile [Show/Delete my tweets] ')
+			# print('8. Logout')
 			#other options
 			print('write exit to close the program \n')
 			print()	
@@ -170,6 +171,14 @@ class Client:
 						message_mini = dumps(message_mini)
 						self.sock.sendall(message_mini.encode('ascii'))
 						print()
+			
+			#REST OF The functions
+
+			# if inp=="8":
+			# 	message = 'LOGOUT'
+			# 	self.sock.sendall(message.encode('ascii'))
+			# 	self.sock.close()
+			# 	os._exit(0)
 
 
 

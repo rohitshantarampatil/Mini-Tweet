@@ -34,6 +34,7 @@ def add_dummy_users(db):
 		'password':passwords[i],
 		'last_login':lastlogins[i],
 		'following':None,
+		'online':False
 		}
 		result = db.users.insert_one(user)
 		print('created user- {0}'.format(result))
