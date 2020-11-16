@@ -65,9 +65,22 @@ def feed_display(db,username):
 	for i in user_following:
 		tweets.extend(list(db.tweets.find({'username':i})))
 	tweets.sort(key = lambda x:x['timestamp'],reverse =True)
-	lst = [{"tweet":i['tweet'],'_id':i['_id'],'timestamp':i['timestamp']} for i in tweets]
+	lst = [{"tweet":i['tweet'],'_id':i['_id'],'timestamp':i['timestamp'],'username':i['username']} for i in tweets]
 	#print(lst)
 	return lst
+
+def retweet_func(db,tweet,username_retweet,username):
+	hashtags = extract_hashtags(tweet)
+	tweet = {
+		'tweet':tweet,
+		'username':username,
+		'hashtags':hashtags,
+		'timestamp':datetime.now(),
+		'retweeted':True,
+		'retweeted_from':username_retweet,
+		}
+	db.tweets.insert_one(tweet)
+	return True
 
 # from pymongo import MongoClient
 # client = MongoClient('localhost',27017)

@@ -85,11 +85,11 @@ class Client:
 		while  True:
 			print('select from following options')
 			print()
-			print('1. Post Tweet ')
-			print('2. Profile [Show/Delete my tweets] ')
-			print('3. Show User Feed')
+			print('1. Post Tweet')
+			print('2. Profile [Show/Delete my tweets]')
+			print('3. Show User Feed [Retweet a tweet]')
 			#other options
-			print('write exit to close the program \n')
+			print('Write exit to close the program \n')
 			print()	
 			
 			inp = input()
@@ -111,7 +111,7 @@ class Client:
 				tweet = input()
 
 				if not check_input_string([tweet]):
-					print('Bad input,Try again')
+					print('Bad input, try again!!')
 					print()
 					continue
 
@@ -189,6 +189,26 @@ class Client:
 				else:
 					for i in range(len(response)):
 						print("{0}:{1} \n{2} \n".format(i+1,response[i]['tweet'], response[i]['timestamp'].date()))
+					print("Please press 1 to retweet a tweet")
+					choice = input()
+					if choice == '1':
+						print("Enter Tweet Number")
+						num = int(input())-1
+						message_mini ={'type':"RETWEET",'tweet':response[num]['tweet'],'username':response[num]['username']}
+						message_mini = dumps(message_mini)
+						self.sock.sendall(message_mini.encode('ascii'))
+						response_mini = self.sock.recv(1024).decode('ascii')
+						if response_mini=="RETWEET SUCCESS":
+							print()
+							print("Tweet retweeted successfully")
+							print()
+						else:
+							print()
+							print("Retweeting failed")
+							print()
+					else:
+						print("Wrong choice selected")
+
 
 def main(host,port):
 	client = Client(host,port)
