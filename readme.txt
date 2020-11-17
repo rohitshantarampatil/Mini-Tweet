@@ -2,9 +2,9 @@ Mini-tweet
 A terminal based twitter-like app made from scratch using socket programming.
 
 Following python libraries have to be installed explicitly:
-Pymongo
-stdiomask
-termcolor
+pip install pymongo
+pip install stdiomask
+pip install termcolor
 
 Mongodb installation required
 
