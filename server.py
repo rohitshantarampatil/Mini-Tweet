@@ -157,6 +157,82 @@ class ServerSocket(threading.Thread):
 						else:
 							response_mini = 'DEL TWEET FAILED'
 							self.sc.sendall(response_mini.encode('ascii'))
+
+				elif message[0]=='SHOW FOLLOWERS':
+					followers_list = show_followers(self.db_client.minitweet, self.username)
+					response = dumps(followers_list)
+					self.sc.sendall(response.encode('ascii'))
+
+					# Now waiting for next choice (whether to remove a given follower)
+					response_mini = self.sc.recv(1024).decode('ascii')
+					response_mini = loads(response_mini)
+
+					if response_mini['type']=='BACK':
+						continue
+
+					else:
+						username_to_remove = response_mini['username']
+						user_remove = unfollow_user(self.db_client.minitweet, username_to_remove, self.username)
+						if user_remove:
+							response_mini = 'REMOVE FOLLOWER SUCCESS'
+							self.sc.sendall(response_mini.encode('ascii'))
+						else:
+							response_mini = 'REMOVE FOLLOWER FAILED'
+							self.sc.sendall(response_mini.encode('ascii'))
+				
+				elif message[0]=='SHOW FOLLOWING':
+					following_list = show_following(self.db_client.minitweet, self.username)
+					response = dumps(following_list)
+					self.sc.sendall(response.encode('ascii'))
+
+					# Now waiting for next choice (whether to unfollow a given user)
+					response_mini = self.sc.recv(1024).decode('ascii')
+					response_mini = loads(response_mini)
+
+					if response_mini['type']=='BACK':
+						continue
+
+					else:
+						username_to_unfollow = response_mini['username']
+						user_unfol = unfollow_user(self.db_client.minitweet, self.username, username_to_unfollow)
+						if user_unfol:
+							response_mini = 'UNFOLLOW USER SUCCESS'
+							self.sc.sendall(response_mini.encode('ascii'))
+						else:
+							response_mini = 'UNFOLLOW USER FAILED'
+							self.sc.sendall(response_mini.encode('ascii'))
+				
+				elif message[0]=='SHOW USERS':
+					user_list = show_users(self.db_client.minitweet, self.username)
+					response = dumps(user_list)
+					self.sc.sendall(response.encode('ascii'))
+
+					# Now waiting for next choice (whether to follow/unfollow a given user)
+					response_mini = self.sc.recv(1024).decode('ascii')
+					response_mini = loads(response_mini)
+
+					if response_mini['type']=='BACK':
+						continue
+
+					elif response_mini['type']=='FOL USER':
+						username_to_follow = response_mini['username']
+						user_fol = follow_user(self.db_client.minitweet, self.username, username_to_follow)
+						if user_fol:
+							response_mini = 'FOLLOW USER SUCCESS'
+							self.sc.sendall(response_mini.encode('ascii'))
+						else:
+							response_mini = 'FOLLOW USER FAILED'
+							self.sc.sendall(response_mini.encode('ascii'))
+
+					else:
+						username_to_unfollow = response_mini['username']
+						user_unfol = unfollow_user(self.db_client.minitweet, self.username, username_to_unfollow)
+						if user_unfol:
+							response_mini = 'UNFOLLOW USER SUCCESS'
+							self.sc.sendall(response_mini.encode('ascii'))
+						else:
+							response_mini = 'UNFOLLOW USER FAILED'
+							self.sc.sendall(response_mini.encode('ascii'))
 				else:
 					print('something else')
 

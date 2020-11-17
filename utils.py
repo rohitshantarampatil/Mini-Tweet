@@ -63,10 +63,6 @@ def del_tweet_by_id(db,tweet_id):
 	except:
 		return False
 
-	
-
-
-
 # from pymongo import MongoClient
 # client = MongoClient('localhost',27017)
 # db = client.minitweet
@@ -75,3 +71,90 @@ def del_tweet_by_id(db,tweet_id):
 # # print(tweets)
 # tweets = loads(tweets)
 # print(tweets[0]['timestamp'])
+
+
+################################################################################
+
+############################### Show All Users #################################
+
+def show_users(db,username):
+	user_list = []
+	all_users = db["users"].find()
+	for i in all_users:
+		if(not i["followers"]):
+			user_list.append({"username":i["username"],"Follow":"You do not follow him"})
+		elif(username in i["followers"]):
+			user_list.append({"username":i["username"],"Follow":"You follow him"})
+		else:
+			user_list.append({"username":i["username"],"Follow":"You do not follow him"})
+	return user_list
+
+def follow_user(db,username,username_to_follow):
+	user1 = db.users.find_one({'username':username})
+	following = user1["following"]
+
+	if(not following):
+		new_following = [username_to_follow]
+	elif(username_to_follow in following):
+		return False;
+	else:
+		new_following = following + [username_to_follow]
+
+	db.users.update_one({'username':username},{"$set": {"following":new_following}})
+
+	user2 = db.users.find_one({'username':username_to_follow})
+	followers = user2["followers"]
+
+	if(not followers):
+		new_followers = [username]
+	else:
+		new_followers = followers + [username]
+
+	db.users.update_one({'username':username_to_follow},{"$set": {"followers":new_followers}})
+	return True
+
+def unfollow_user(db,username,username_to_unfollow):
+	user1 = db.users.find_one({'username':username})
+	following = user1["following"]
+
+	if(not following):
+		return False;
+	elif(username_to_unfollow not in following):
+		return False;
+	else:
+		following.remove(username_to_unfollow)
+
+	new_following = following[:]
+	db.users.update_one({'username':username},{"$set": {"following":new_following}})
+
+	user2 = db.users.find_one({'username':username_to_unfollow})
+	followers = user2["followers"]
+
+	if(not followers):
+		return False;
+	else:
+		followers.remove(username)
+
+	new_followers = followers[:]
+	db.users.update_one({'username':username_to_unfollow},{"$set": {"followers":new_followers}})
+	return True
+
+################################################################################
+
+############################### Show All Followings and Followers #############################
+
+def show_following(db,username):
+	following_list = db.users.find_one({"username": username})["following"]
+
+	if(not following_list):
+		return []
+	return following_list
+
+def show_followers(db,username):
+	followers_list = db.users.find_one({"username": username})["followers"]
+
+	if(not followers_list):
+		return []
+	return followers_list
+
+################################################################################
