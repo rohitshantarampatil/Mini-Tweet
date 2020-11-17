@@ -234,6 +234,13 @@ class ServerSocket(threading.Thread):
 						else:
 							response_mini = 'UNFOLLOW USER FAILED'
 							self.sc.sendall(response_mini.encode('ascii'))
+
+				elif message[0]=='LOGOUT':
+					logout(self.db_client.minitweet,self.username)
+					print('{} has closed the connection'.format(self.sockname))
+					response="LOGOUT SUCCESS"
+					self.sc.sendall(response.encode('ascii'))
+				
 				else:
 					print('something else')
 

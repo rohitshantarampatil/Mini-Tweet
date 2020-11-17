@@ -20,19 +20,22 @@ def add_dummy_tweets(db):
 		'retweeted_from':None,
 		}
 		db.tweets.insert_one(tweet)
-		print('created tweet's)
+		print('created tweets')
 	return True
 
 def add_dummy_users(db):
-	usernames = ['Rohit','Anubhav','Harshil']		
-	passwords = ['Rohit','Anubhav','Harshil']
-	lastlogins = [None,None,None]
+	usernames = ['rohit','Rohit','Anubhav','Harshil']		
+	passwords = ['rohit','Rohit','Anubhav','Harshil']
+	lastlogins = [None,None,None,None]
+	following = [None,None,None,None]
+	followers = [None,None,None,None]
 
 	for i in range(len(usernames)):
 		user = {
 		'username':usernames[i],
 		'password':passwords[i],
 		'last_login':lastlogins[i],
+		'followers':None,
 		'following':None,
 		'online':False
 		}
@@ -42,7 +45,7 @@ def add_dummy_users(db):
 client = MongoClient('localhost',27017)
 db = client.minitweet
 add_dummy_users(db)
-add_dummy_tweets(db)
+# add_dummy_tweets(db)
 
 
 

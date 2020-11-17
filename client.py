@@ -91,7 +91,7 @@ class Client:
 			print('6. Show Followers[Show/Remove a follower]')
 			print('7. Show Followings[Show/Unfollow]')
 			print('8. Show all Users [Show/Follow or Unfollow]')
-			# print('8. Logout')
+			print('9. Logout')
 			#other options
 			
 			inp = input()	
