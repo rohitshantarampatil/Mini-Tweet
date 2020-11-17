@@ -88,6 +88,7 @@ class Client:
 			print()
 			print('1. Post Tweet ')
 			print('2. Profile [Show/Delete my tweets] ')
+			print('3. Show User Feed [Retweet a tweet]')
 			print('6. Show Followers[Show/Remove a follower]')
 			print('7. Show Followings[Show/Unfollow]')
 			print('8. Show all Users [Show/Follow or Unfollow]')
@@ -170,6 +171,47 @@ class Client:
 						message_mini = dumps(message_mini)
 						self.sock.sendall(message_mini.encode('ascii'))
 						print()
+			
+			if inp=='3':
+				print("User Feed will be displayed")
+				message = "ALLUSERFEED"
+				self.sock.sendall(message.encode('ascii'))
+				print("Showing all user feed, please wait ...")
+				response = self.sock.recv(1024).decode('ascii')
+				response = loads(response)
+				# print("response{0}",response)
+				print()
+				if len(response)==0:
+					print("There are no tweets posted from users you follow.")
+					message_mini ={'type':"BACK"}
+					message_mini = dumps(message_mini)
+					self.sock.sendall(message_mini.encode('ascii'))
+					continue
+
+				else:
+					for i in range(len(response)):
+						print(response[i]['username'],end = " ")
+						print("tweeted this tweet")
+						print("{0}:{1} \n{2} \n".format(i+1,response[i]['tweet'], response[i]['timestamp'].date()))
+					print("1. Retweet a tweet")
+					print("2. Back")
+					choice = input()
+					if choice == '1':
+						print("Enter Tweet Number")
+						num = int(input())-1
+						message_mini ={'type':"RETWEET",'tweet':response[num]['tweet'],'username':response[num]['username']}
+						message_mini = dumps(message_mini)
+						self.sock.sendall(message_mini.encode('ascii'))
+						response_mini = self.sock.recv(1024).decode('ascii')
+						if response_mini=="RETWEET SUCCESS":
+							print()
+							print("Tweet retweeted successfully")
+							print()
+					else:
+						message_mini ={'type':"BACK"}
+						message_mini = dumps(message_mini)
+						self.sock.sendall(message_mini.encode('ascii'))
+						continue
 
 			if inp=='6':
 				print('Show all followers selected')

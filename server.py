@@ -234,6 +234,30 @@ class ServerSocket(threading.Thread):
 						else:
 							response_mini = 'UNFOLLOW USER FAILED'
 							self.sc.sendall(response_mini.encode('ascii'))
+				
+
+				elif message[0] == "ALLUSERFEED":
+					feed = feed_display(self.db_client.minitweet,self.username)
+					response = dumps(feed)
+					self.sc.sendall(response.encode('ascii'))
+					response_mini = self.sc.recv(1024).decode('ascii')
+					response_mini = loads(response_mini)
+					if response_mini['type']=="RETWEET":
+						tweet_to_retweet = response_mini['tweet']
+						username_retweet = response_mini['username']
+						retweeted = retweet_func(self.db_client.minitweet,tweet_to_retweet,username_retweet,self.username)
+						if retweeted:
+							response_mini = 'RETWEET SUCCESS'
+							self.sc.sendall(response_mini.encode('ascii'))
+						else:
+							response_mini = 'RETWEET FAILED'
+							self.sc.sendall(response_mini.encode('ascii'))
+					else:
+						# response type is back
+						continue
+					
+
+
 
 				elif message[0]=='LOGOUT':
 					logout(self.db_client.minitweet,self.username)

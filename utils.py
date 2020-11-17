@@ -63,17 +63,44 @@ def del_tweet_by_id(db,tweet_id):
 	except:
 		return False
 
-# from pymongo import MongoClient
-# client = MongoClient('localhost',27017)
-# db = client.minitweet
-# tweets = get_tweets(db,'rohit')
-# tweets = dumps(tweets)
-# # print(tweets)
-# tweets = loads(tweets)
-# print(tweets[0]['timestamp'])
-
 
 ################################################################################
+
+################################# Show userfeed ###############################
+
+def feed_display(db,username):
+	user = list(db.users.find({'username':username}))
+	dict1 = user[0]
+	user_following = dict1['following']
+	#print(user_following)
+	tweets = []
+	if not user_following:
+		return []
+
+	for i in user_following:
+		tweets.extend(list(db.tweets.find({'username':i})))
+	tweets.sort(key = lambda x:x['timestamp'],reverse =True)
+	lst = [{"tweet":i['tweet'],'_id':i['_id'],'timestamp':i['timestamp'],'username':i['username']} for i in tweets]
+	#print(lst)
+	return lst
+
+def retweet_func(db,tweet,username_retweet,username):
+	hashtags = extract_hashtags(tweet)
+	tweet = {
+		'tweet':tweet,
+		'username':username,
+		'hashtags':hashtags,
+		'timestamp':datetime.now(),
+		'retweeted':True,
+		'retweeted_from':username_retweet,
+		}
+	db.tweets.insert_one(tweet)
+	return True
+
+
+
+
+##################################################################################
 
 ############################### Show All Users #################################
 
@@ -159,3 +186,14 @@ def show_followers(db,username):
 	return followers_list
 
 ################################################################################
+
+
+# from pymongo import MongoClient
+# client = MongoClient('localhost',27017)
+# db = client.minitweet
+# tweets = get_tweets(db,'rohit')
+# tweets = dumps(tweets)
+# # print(tweets)
+# tweets = loads(tweets)
+# print(tweets[0]['timestamp'])
+
