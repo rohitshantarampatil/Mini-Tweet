@@ -188,6 +188,8 @@ class Client:
 					print("You haven't posted any tweet yet")
 				else:
 					for i in range(len(response)):
+						print(response[i]['username'],end = " ")
+						print("tweeted this tweet")
 						print("{0}:{1} \n{2} \n".format(i+1,response[i]['tweet'], response[i]['timestamp'].date()))
 					print("Please press 1 to retweet a tweet")
 					choice = input()
