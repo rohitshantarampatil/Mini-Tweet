@@ -37,14 +37,13 @@ def register(db,username,password):
 		except Exception as e:
 			return e
 
-# def logout(db,username):
-# 	try:
-# 		user_exist = db.users.find_one({'username':username})	
-# 		db.users.find_one_and_update({'_id':_id},{'$set':{'online':False}},upsert=True)
-# 		return True	
+def logout(db,username):
+	try:	
+		db.users.find_one_and_update({'username':username},{'$set':{'online':False}},upsert=True)
+		return True	
 
-# 	except Exception as e:
-# 		return e
+	except Exception as e:
+		return e
 
 def delete_user(db,username,password):
 	try:

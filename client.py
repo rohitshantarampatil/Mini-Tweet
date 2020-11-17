@@ -7,6 +7,7 @@ import stdiomask
 from constants import *
 from utils import *
 from bson.json_util import dumps,loads
+import time
 
 class Client:
 	def __init__(self, host, port):
@@ -87,17 +88,12 @@ class Client:
 			print()
 			print('1. Post Tweet ')
 			print('2. Profile [Show/Delete my tweets] ')
-			# print('8. Logout')
+			print('9. Logout')
 			#other options
-			print('write exit to close the program \n')
-			print()	
 			
 			inp = input()	
 			print()
 
-			if inp=='exit':
-				self.sock.close()
-				os._exit(0)
 
 			if not check_input_string([inp]):
 				print('Bad input,Try again')
@@ -174,11 +170,14 @@ class Client:
 			
 			#REST OF The functions
 
-			# if inp=="8":
-			# 	message = 'LOGOUT'
-			# 	self.sock.sendall(message.encode('ascii'))
-			# 	self.sock.close()
-			# 	os._exit(0)
+			if inp=="9":
+				message = 'LOGOUT'
+				self.sock.sendall(message.encode('ascii'))
+				response = self.sock.recv(1024).decode('ascii')
+				print('logging out...')
+				time.sleep(2)
+				self.sock.close()
+				os._exit(0)
 
 
 
@@ -190,7 +189,7 @@ def main(host,port):
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='Mini Tweet')
-	parser.add_argument('host', help='Interface the server listens at')
+	parser.add_argument('host', help='Interface the server listens at',default='localhost')
 	parser.add_argument('-p', metavar='PORT', type=int, default=1060,help='TCP port (default 1060)')
 	args = parser.parse_args()
 	main(args.host, args.p)

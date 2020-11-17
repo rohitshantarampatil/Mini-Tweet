@@ -157,6 +157,11 @@ class ServerSocket(threading.Thread):
 						else:
 							response_mini = 'DEL TWEET FAILED'
 							self.sc.sendall(response_mini.encode('ascii'))
+				elif message[0]=='LOGOUT':
+					logout(self.db_client.minitweet,self.username)
+					print('{} has closed the connection'.format(self.sockname))
+					response="LOGOUT SUCCESS"
+					self.sc.sendall(response.encode('ascii'))
 				else:
 					print('something else')
 
@@ -169,10 +174,6 @@ class ServerSocket(threading.Thread):
 
 
 def exit(server):
-	'''
-	Allows the server administrator to shut down the server.
-	Typing 'q' in the command line will close all active connections and exit the application.
-	'''
 	while True:
 		ipt = input('')
 		if ipt == 'q':
@@ -185,7 +186,7 @@ def exit(server):
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='Mini Tweet')
-	parser.add_argument('host', help='Interface the server listens at')
+	parser.add_argument('host', help='Interface the server listens at',default='localhost')
 	parser.add_argument('-p', metavar='PORT', type=int, default=1060, help='TCP port (default 1060)')
 	args = parser.parse_args()
 
