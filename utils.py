@@ -187,6 +187,20 @@ def show_followers(db,username):
 
 ################################################################################
 
+################################## Search Tweets ###############################
+def search_tweets(db,search_text,my_username):
+	db.tweets.create_index([("tweet","text"),("username","text")])
+	tweets =db.tweets.find({"$text":{"$search":search_text}}).limit(10)
+	if not tweets:
+		return []
+	lst = []
+	for i in tweets: 
+		if i["username"]!=my_username:
+			lst.append({"tweet":i['tweet'],'_id':i['_id'],'timestamp':i['timestamp'],'username':i['username']})
+	return lst
+
+#################################################################################
+
 
 # from pymongo import MongoClient
 # client = MongoClient('localhost',27017)
@@ -196,4 +210,6 @@ def show_followers(db,username):
 # # print(tweets)
 # tweets = loads(tweets)
 # print(tweets[0]['timestamp'])
+# text = "#modi"
 
+# lst = search_tweets(db,text)
