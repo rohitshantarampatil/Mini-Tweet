@@ -81,12 +81,13 @@ def show_users(db,username):
 	user_list = []
 	all_users = db["users"].find()
 	for i in all_users:
-		if(not i["followers"]):
-			user_list.append({"username":i["username"],"Follow":"You do not follow him"})
-		elif(username in i["followers"]):
-			user_list.append({"username":i["username"],"Follow":"You follow him"})
-		else:
-			user_list.append({"username":i["username"],"Follow":"You do not follow him"})
+		if i["username"]!=username:
+			if(not i["followers"]):
+				user_list.append({"username":i["username"],"Follow":"You do not follow him"})
+			elif(username in i["followers"]):
+				user_list.append({"username":i["username"],"Follow":"You follow him"})
+			else:
+				user_list.append({"username":i["username"],"Follow":"You do not follow him"})
 	return user_list
 
 def follow_user(db,username,username_to_follow):
