@@ -88,7 +88,10 @@ class Client:
 			print()
 			print('1. Post Tweet ')
 			print('2. Profile [Show/Delete my tweets] ')
-			print('9. Logout')
+			print('6. Show Followers[Show/Remove a follower]')
+			print('7. Show Followings[Show/Unfollow]')
+			print('8. Show all Users [Show/Follow or Unfollow]')
+			# print('8. Logout')
 			#other options
 			
 			inp = input()	
@@ -167,6 +170,171 @@ class Client:
 						message_mini = dumps(message_mini)
 						self.sock.sendall(message_mini.encode('ascii'))
 						print()
+
+			if inp=='6':
+				print('Show all followers selected')
+
+				message = 'SHOW FOLLOWERS'
+				self.sock.sendall(message.encode('ascii'))
+				print('Showing all followers,please wait ...')
+				response = self.sock.recv(1024).decode('ascii')
+				response = loads(response)
+				print()
+
+				if len(response)==0:
+					print()
+					print("You don't have any followers yet")
+					print()
+					message_mini = {'type':'BACK'}
+					message_mini = dumps(message_mini)
+					self.sock.sendall(message_mini.encode('ascii'))					
+					continue
+
+				else:
+					for i in range(len(response)):
+						print("{0}:{1} \n".format(i+1,response[i]))
+						
+					print('1. Remove a given follower')
+					print("2. Back")
+					choice = input()
+					print()
+					if (choice =="1"):
+						print("Enter the user number which you want to remove")
+						u_num = int(input())-1
+
+						message_mini ={'type':"UNFOL USER",'username':response[u_num]}
+						message_mini = dumps(message_mini)
+						self.sock.sendall(message_mini.encode('ascii'))
+						response_mini = self.sock.recv(1024).decode('ascii')
+
+						if response_mini=="REMOVE FOLLOWER SUCCESS":
+							print()
+							print("You have successfully removed the follower")
+							print()
+						else:
+							print()
+							print("Error!!!")
+							print()
+
+					elif (choice=='2'):
+						message_mini = {'type':'BACK'}
+						message_mini = dumps(message_mini)
+						self.sock.sendall(message_mini.encode('ascii'))
+						print()
+			if inp=='7':
+				print('Show all following selected')
+
+				message = 'SHOW FOLLOWING'
+				self.sock.sendall(message.encode('ascii'))
+				print('Showing all followings,please wait ...')
+				response = self.sock.recv(1024).decode('ascii')
+				response = loads(response)
+				print()
+
+				if len(response)==0:
+					print()
+					print("You don't have any followings yet")
+					print()
+					message_mini = {'type':'BACK'}
+					message_mini = dumps(message_mini)
+					self.sock.sendall(message_mini.encode('ascii'))					
+					continue
+
+				else:
+					for i in range(len(response)):
+						print("{0}:{1} \n".format(i+1,response[i]))
+						
+					print('1. Unfollow a given user')
+					print("2. Back")
+					choice = input()
+					print()
+					if (choice =="1"):
+						print("Enter the user number which you want to unfollow")
+						u_num = int(input())-1
+
+						message_mini ={'type':"UNFOL USER",'username':response[u_num]}
+						message_mini = dumps(message_mini)
+						self.sock.sendall(message_mini.encode('ascii'))
+						response_mini = self.sock.recv(1024).decode('ascii')
+
+						if response_mini=="UNFOLLOW USER SUCCESS":
+							print()
+							print("You have successfully unfollowed the user")
+							print()
+						else:
+							print()
+							print("Error!!!")
+							print()
+
+					elif (choice=='2'):
+						message_mini = {'type':'BACK'}
+						message_mini = dumps(message_mini)
+						self.sock.sendall(message_mini.encode('ascii'))
+						print()
+
+			if inp=='8':
+				print('Show all users selected')
+
+				message = 'SHOW USERS'
+				self.sock.sendall(message.encode('ascii'))
+				print('Showing all users,please wait ...')
+				response = self.sock.recv(1024).decode('ascii')
+				response = loads(response)
+				print()
+
+				for i in range(len(response)):
+					print("{0}:{1} \n{2} \n".format(i+1,response[i]['username'], response[i]['Follow']))
+					
+				print('1. Follow/Unfollow a given user')
+				print("2. Back")
+				choice = input()
+				print()
+				if (choice =="1"):
+					print("1. Follow a given user")
+					print("2. Unfollow a given user")
+					
+					choice_2 = input()
+					print()
+					if(choice_2 == "1"):
+						print("Enter the user number which you want to follow")
+						u_num = int(input())-1
+
+						message_mini ={'type':"FOL USER",'username':response[u_num]['username']}
+						message_mini = dumps(message_mini)
+						self.sock.sendall(message_mini.encode('ascii'))
+						response_mini = self.sock.recv(1024).decode('ascii')
+
+						if response_mini=="FOLLOW USER SUCCESS":
+							print()
+							print("You have successfully started following the user")
+							print()
+						else:
+							print()
+							print("Error: You already follow that user")
+							print()
+					elif(choice_2 == "2"):
+						print("Enter the user number which you want to unfollow")
+						u_num = int(input())-1
+
+						message_mini ={'type':"UNFOL USER",'username':response[u_num]['username']}
+						message_mini = dumps(message_mini)
+						self.sock.sendall(message_mini.encode('ascii'))
+						response_mini = self.sock.recv(1024).decode('ascii')
+
+						if response_mini=="UNFOLLOW USER SUCCESS":
+							print()
+							print("You have successfully unfollowed the user")
+							print()
+						else:
+							print()
+							print("Error: You already don't follow that user")
+							print()
+
+				elif (choice=='2'):
+					message_mini = {'type':'BACK'}
+					message_mini = dumps(message_mini)
+					self.sock.sendall(message_mini.encode('ascii'))
+					print()
 			
 			#REST OF The functions
 
