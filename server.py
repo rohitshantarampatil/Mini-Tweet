@@ -160,8 +160,8 @@ class ServerSocket(threading.Thread):
 
 
 				elif message[0]=='SHOW FOLLOWERS':
-					followers_list = show_followers(self.db_client.minitweet, self.username)
-					response = dumps(followers_list)
+					followers_list, online_list = show_followers(self.db_client.minitweet, self.username)
+					response = dumps([followers_list,online_list])
 					self.sc.sendall(response.encode('ascii'))
 
 					# Now waiting for next choice (whether to remove a given follower)
@@ -182,8 +182,8 @@ class ServerSocket(threading.Thread):
 							self.sc.sendall(response_mini.encode('ascii'))
 				
 				elif message[0]=='SHOW FOLLOWING':
-					following_list = show_following(self.db_client.minitweet, self.username)
-					response = dumps(following_list)
+					following_list, online_list = show_following(self.db_client.minitweet, self.username)
+					response = dumps([following_list,online_list])
 					self.sc.sendall(response.encode('ascii'))
 
 					# Now waiting for next choice (whether to unfollow a given user)

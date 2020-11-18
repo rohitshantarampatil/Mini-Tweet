@@ -266,6 +266,9 @@ class Client:
 				print('Showing all followers,please wait ...')
 				response = self.sock.recv(1024).decode('ascii')
 				response = loads(response)
+
+				online_list = response[1]
+				response = response[0]
 				print()
 
 				if len(response)==0:
@@ -279,7 +282,7 @@ class Client:
 
 				else:
 					for i in range(len(response)):
-						print("{0}:{1} \n".format(i+1,response[i]))
+						print("{0}:{1}\t{2} \n".format(i+1,response[i],online_list[i]))
 						
 					print('1. Remove a given follower')
 					print("2. Back")
@@ -316,6 +319,9 @@ class Client:
 				print('Showing all followings,please wait ...')
 				response = self.sock.recv(1024).decode('ascii')
 				response = loads(response)
+
+				online_list = response[1]
+				response = response[0]
 				print()
 
 				if len(response)==0:
@@ -329,7 +335,7 @@ class Client:
 
 				else:
 					for i in range(len(response)):
-						print("{0}:{1} \n".format(i+1,response[i]))
+						print("{0}:{1}\t{2} \n".format(i+1,response[i],online_list[i]))
 						
 					print('1. Unfollow a given user')
 					print("2. Back")
