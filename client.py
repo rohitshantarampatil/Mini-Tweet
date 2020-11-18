@@ -378,52 +378,47 @@ class Client:
 				for i in range(len(response)):
 					print("{0}:{1} \n{2} \n".format(i+1,response[i]['username'], response[i]['Follow']))
 					
-				print('1. Follow/Unfollow a given user')
-				print("2. Back")
+				print('1. Follow a given user')
+				print('2. Unfollow a given user')
+				print("3. Back")
 				choice = input()
 				print()
 				if (choice =="1"):
-					print("1. Follow a given user")
-					print("2. Unfollow a given user")
-					
-					choice_2 = input()
-					print()
-					if(choice_2 == "1"):
-						print("Enter the user number which you want to follow")
-						u_num = int(input())-1
+					print("Enter the user number which you want to follow")
+					u_num = int(input())-1
 
-						message_mini ={'type':"FOL USER",'username':response[u_num]['username']}
-						message_mini = dumps(message_mini)
-						self.sock.sendall(message_mini.encode('ascii'))
-						response_mini = self.sock.recv(1024).decode('ascii')
+					message_mini ={'type':"FOL USER",'username':response[u_num]['username']}
+					message_mini = dumps(message_mini)
+					self.sock.sendall(message_mini.encode('ascii'))
+					response_mini = self.sock.recv(1024).decode('ascii')
 
-						if response_mini=="FOLLOW USER SUCCESS":
-							print()
-							print("You have successfully started following the user")
-							print()
-						else:
-							print()
-							print("Error: You already follow that user")
-							print()
-					elif(choice_2 == "2"):
-						print("Enter the user number which you want to unfollow")
-						u_num = int(input())-1
+					if response_mini=="FOLLOW USER SUCCESS":
+						print()
+						print("You have successfully started following the user")
+						print()
+					else:
+						print()
+						print("Error: You already follow that user")
+						print()
+				elif(choice == "2"):
+					print("Enter the user number which you want to unfollow")
+					u_num = int(input())-1
 
-						message_mini ={'type':"UNFOL USER",'username':response[u_num]['username']}
-						message_mini = dumps(message_mini)
-						self.sock.sendall(message_mini.encode('ascii'))
-						response_mini = self.sock.recv(1024).decode('ascii')
+					message_mini ={'type':"UNFOL USER",'username':response[u_num]['username']}
+					message_mini = dumps(message_mini)
+					self.sock.sendall(message_mini.encode('ascii'))
+					response_mini = self.sock.recv(1024).decode('ascii')
 
-						if response_mini=="UNFOLLOW USER SUCCESS":
-							print()
-							print("You have successfully unfollowed the user")
-							print()
-						else:
-							print()
-							print("Error: You already don't follow that user")
-							print()
+					if response_mini=="UNFOLLOW USER SUCCESS":
+						print()
+						print("You have successfully unfollowed the user")
+						print()
+					else:
+						print()
+						print("Error: You already don't follow that user")
+						print()
 
-				elif (choice=='2'):
+				elif(choice=='3'):
 					message_mini = {'type':'BACK'}
 					message_mini = dumps(message_mini)
 					self.sock.sendall(message_mini.encode('ascii'))
