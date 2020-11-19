@@ -173,17 +173,33 @@ def unfollow_user(db,username,username_to_unfollow):
 
 def show_following(db,username):
 	following_list = db.users.find_one({"username": username})["following"]
+	online_list = []
+
+	for i in following_list:
+		online_stat = db.users.find_one({"username": i})["online"]
+		if(online_stat):
+			online_list.append("Online")
+		else:
+			online_list.append("Not Online")
 
 	if(not following_list):
-		return []
-	return following_list
+		return [],[]
+	return following_list,online_list
 
 def show_followers(db,username):
 	followers_list = db.users.find_one({"username": username})["followers"]
+	online_list = []
+
+	for i in followers_list:
+		online_stat = db.users.find_one({"username": i})["online"]
+		if(online_stat):
+			online_list.append("Online")
+		else:
+			online_list.append("Not Online")
 
 	if(not followers_list):
-		return []
-	return followers_list
+		return [],[]
+	return followers_list,online_list
 
 ################################################################################
 
