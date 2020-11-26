@@ -215,6 +215,23 @@ def search_tweets(db,search_text,my_username):
 			lst.append({"tweet":i['tweet'],'_id':i['_id'],'timestamp':i['timestamp'],'username':i['username']})
 	return lst
 
+#show trending hashtags
+def get_trending_hashtags(db):
+	tweets = db.tweets.find({})
+	hashtags = {}
+	for i in tweets:
+		if i['hashtags']!=None:
+			for k in i['hashtags']:
+				if k in hashtags:
+					hashtags[k]+=1
+				else:
+					hashtags[k]=1
+	lst= [[i,hashtags[i]] for i in hashtags]
+	lst.sort(key = lambda x:x[1],reverse=True)
+	if lst:
+		return lst[:5]
+	return []
+
 #################################################################################
 
 
@@ -229,3 +246,5 @@ def search_tweets(db,search_text,my_username):
 # text = "#modi"
 
 # lst = search_tweets(db,text)
+# lst = get_trending_hashtags(db)
+# print(lst)

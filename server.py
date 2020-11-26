@@ -276,7 +276,11 @@ class ServerSocket(threading.Thread):
 					else:
 						# response type is back
 						continue
-				
+				elif message[0]=="TRENDING HASHTAGS":
+					hashtag_lst= get_trending_hashtags(self.db_client.minitweet)
+					response = dumps(hashtag_lst)
+					self.sc.sendall(response.encode('ascii'))
+					
 
 				elif message[0]=='LOGOUT':
 					logout(self.db_client.minitweet,self.username)

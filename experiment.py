@@ -4,7 +4,7 @@
 # input()
 
 import re
-string = "Yo what the hell #bro_what hey #hello"
+string = "#testing testing #_testing"
 regex = '#\w+'
 match = re.findall(regex,string)
 print(match)
