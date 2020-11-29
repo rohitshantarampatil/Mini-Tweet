@@ -215,6 +215,17 @@ def search_tweets(db,search_text,my_username):
 			lst.append({"tweet":i['tweet'],'_id':i['_id'],'timestamp':i['timestamp'],'username':i['username']})
 	return lst
 
+def search_my_tweets(db,search_text,my_username):
+	db.tweets.create_index([("tweet","text"),("username","text")])
+	tweets =db.tweets.find({"$text":{"$search":search_text}}).limit(10)
+	if not tweets:
+		return []
+	lst = []
+	for i in tweets: 
+		if i["username"]==my_username:
+			lst.append({"tweet":i['tweet'],'_id':i['_id'],'timestamp':i['timestamp'],'username':i['username']})
+	return lst
+
 #show trending hashtags
 def get_trending_hashtags(db):
 	tweets = db.tweets.find({})

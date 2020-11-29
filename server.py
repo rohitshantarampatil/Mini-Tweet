@@ -276,6 +276,12 @@ class ServerSocket(threading.Thread):
 					else:
 						# response type is back
 						continue
+
+				elif message[0]=="SEARCH MY TWEETS":
+					feed = search_my_tweets(self.db_client.minitweet,message[1],self.username)
+					response = dumps(feed)
+					self.sc.sendall(response.encode('ascii'))
+
 				elif message[0]=="TRENDING HASHTAGS":
 					hashtag_lst= get_trending_hashtags(self.db_client.minitweet)
 					response = dumps(hashtag_lst)

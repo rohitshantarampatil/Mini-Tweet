@@ -214,8 +214,9 @@ class Client:
 						self.sock.sendall(message_mini.encode('ascii'))
 						continue
 			if inp=='4':
-				print("1. search tweets")
-				print("2. show top 5 trending hashtags")
+				print("1. search in feed")
+				print("2. search in my tweets")
+				print("3. show top 5 trending hashtags")
 				choice = input()
 				if choice=="1":
 					print()
@@ -260,8 +261,31 @@ class Client:
 							message_mini = dumps(message_mini)
 							self.sock.sendall(message_mini.encode('ascii'))
 							continue
-				
+
 				elif choice=="2":
+					print()
+					print("Type search text : you can enter hashtags or tweet text or anything...")
+					search_text = input()
+					if not check_input_string([search_text]):
+						continue
+					message = "SEARCH MY TWEETS{0}{1}".format(SEPARATOR,search_text)
+					self.sock.sendall(message.encode('ascii'))
+					response = self.sock.recv(1024).decode('ascii')
+					response = loads(response)
+					print()
+
+					if len(response)==0:
+						print("There are no tweets which match your search")
+						continue
+
+					else:
+						for i in range(len(response)):
+							print(response[i]['username'],end = " ")
+							print("tweeted this tweet")
+							print("{0}:{1} \n{2} \n".format(i+1,response[i]['tweet'], response[i]['timestamp'].date()))
+						
+				
+				elif choice=="3":
 					message = "TRENDING HASHTAGS"
 					self.sock.sendall(message.encode('ascii'))
 					response = self.sock.recv(1024).decode('ascii')
