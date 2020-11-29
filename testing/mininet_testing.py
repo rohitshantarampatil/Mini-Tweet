@@ -9,6 +9,7 @@ from mininet.cli import CLI
 from mininet.log import setLogLevel, info
 from mininet.link import TCLink, Intf
 from subprocess import call
+from time import sleep
 
 def myNetwork():
 
@@ -104,6 +105,7 @@ def myNetwork():
     net.addLink(s14, s29)
     net.addLink(s15, s30)
     net.addLink(s15, s31)
+    net.addLink(s1, h1)
     net.addLink(s16, h2)
     net.addLink(s17, h3)
     net.addLink(s18, h4)
@@ -162,7 +164,19 @@ def myNetwork():
 
     info( '*** Post configure switches and hosts\n')
 
-    CLI(net)
+    hlist = []
+    
+    # h1.cmd('/home/rohit/anaconda3/bin/python ./exp.py <inp.txt  >out.txt')
+    result = h1.cmd("mongod &")
+    print(result)
+    sleep(1)
+    result2 = h1.cmd("/home/os-lab/anaconda3/bin/python ../server.py 10.0.0.1 &")
+    print(result2)
+    sleep(1)
+    result3 = h2.cmd("/home/os-lab/anaconda3/bin/python ../client.py 10.0.0.1 <./inputs/input.txt >./outputs/output.txt")
+    print(result3)
+    sleep(4)
+    #CLI(net)
     net.stop()
 
 if __name__ == '__main__':
