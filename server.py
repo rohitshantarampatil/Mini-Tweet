@@ -60,6 +60,7 @@ class ServerSocket(threading.Thread):
 		self.username = None
 	def connect_to_db(self):
 		client = MongoClient('localhost',27017)
+		# client = MongoClient('10.0.0.1',27017)
 		print('database connected')
 		return client 
 

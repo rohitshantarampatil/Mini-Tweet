@@ -49,8 +49,8 @@ class Client:
 			if inp=='1':
 				print('Username: ',end='')
 				username= input()
-				password = stdiomask.getpass()
-				
+				# password = stdiomask.getpass()
+				password = input()
 				#Checking if inputs are non-empty
 				if not check_input_string([username,password]):
 					print('Bad input,Try again')
@@ -70,7 +70,8 @@ class Client:
 			elif inp=='2':
 				print('Username: ',end='')
 				username= input()
-				password = stdiomask.getpass()
+				# password = stdiomask.getpass()
+				password = input()
 				message = 'LOGIN{0}{1}{2}{3}'.format(SEPARATOR,username,SEPARATOR,password)
 				self.sock.sendall(message.encode('ascii'))
 				response = self.sock.recv(1024).decode('ascii')

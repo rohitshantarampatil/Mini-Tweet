@@ -251,7 +251,7 @@ def get_trending_hashtags(db):
 # db = client.minitweet
 # tweets = get_tweets(db,'rohit')
 # tweets = dumps(tweets)
-# # print(tweets)
+# print(tweets)
 # tweets = loads(tweets)
 # print(tweets[0]['timestamp'])
 # text = "#modi"
