@@ -1,7 +1,6 @@
 import sys
 import time
 from datetime import datetime
-from termcolor import colored
 import re
 import json
 from bson.json_util import dumps,loads
