@@ -27,8 +27,8 @@ def register(db,username,password):
 		'username':username,
 		'password':password,
 		'last_login':None,
-		'following':None,
-		'followers':None,
+		'following':[],
+		'followers':[],
 		'online':None
 		}
 		try:
