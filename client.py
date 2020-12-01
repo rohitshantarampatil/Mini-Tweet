@@ -50,6 +50,7 @@ class Client:
 				print('Username: ',end='')
 				username= input()
 				# password = stdiomask.getpass()
+				print('Password: ',end='')
 				password = input()
 				#Checking if inputs are non-empty
 				if not check_input_string([username,password]):
@@ -71,6 +72,7 @@ class Client:
 				print('Username: ',end='')
 				username= input()
 				# password = stdiomask.getpass()
+				print('Password: ',end='')
 				password = input()
 				message = 'LOGIN{0}{1}{2}{3}'.format(SEPARATOR,username,SEPARATOR,password)
 				self.sock.sendall(message.encode('ascii'))
@@ -91,10 +93,10 @@ class Client:
 			print('2. Profile [Show/Delete my tweets] ')
 			print('3. Show User Feed [Retweet a tweet]')
 			print('4. Search Tweets / Show trending tweets')
-			print('6. Show Followers[Show/Remove a follower]')
-			print('7. Show Followings[Show/Unfollow]')
-			print('8. Show all Users [Show/Follow or Unfollow]')
-			print('9. Logout')
+			print('5. Show Followers[Show/Remove a follower]')
+			print('6. Show Followings[Show/Unfollow]')
+			print('7. Show all Users [Show/Follow or Unfollow]')
+			print('8. Logout')
 			#other options
 			
 			inp = input()	
@@ -179,7 +181,9 @@ class Client:
 				message = "ALLUSERFEED"
 				self.sock.sendall(message.encode('ascii'))
 				print("Showing all user feed, please wait ...")
-				response = self.sock.recv(1024).decode('ascii')
+				response = self.sock.recv(16384).decode('ascii')
+				# print(response)
+				# time.sleep(3)
 				response = loads(response)
 				# print("response{0}",response)
 				print()
@@ -300,7 +304,7 @@ class Client:
 						print("no tweets available")
 						print()
 
-			if inp=='6':
+			if inp=='5':
 				print('Show all followers selected')
 
 				message = 'SHOW FOLLOWERS'
@@ -353,7 +357,7 @@ class Client:
 						message_mini = dumps(message_mini)
 						self.sock.sendall(message_mini.encode('ascii'))
 						print()
-			if inp=='7':
+			if inp=='6':
 				print('Show all following selected')
 
 				message = 'SHOW FOLLOWING'
@@ -407,7 +411,7 @@ class Client:
 						self.sock.sendall(message_mini.encode('ascii'))
 						print()
 
-			if inp=='8':
+			if inp=='7':
 				print('Show all users selected')
 
 				message = 'SHOW USERS'
@@ -468,7 +472,7 @@ class Client:
 			
 			#REST OF The functions
 
-			if inp=="9":
+			if inp=="8":
 				message = 'LOGOUT'
 				self.sock.sendall(message.encode('ascii'))
 				response = self.sock.recv(1024).decode('ascii')

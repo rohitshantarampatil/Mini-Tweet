@@ -45,7 +45,7 @@ def add_dummy_users(db):
 client = MongoClient('localhost',27017)
 db = client.minitweet
 add_dummy_users(db)
-# add_dummy_tweets(db)
+add_dummy_tweets(db)
 
 
 
