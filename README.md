@@ -1,4 +1,4 @@
-# Mini-tweet
+# Mini-Tweet
 
 A terminal based Twitter-like app made from scratch using socket programming.
 
