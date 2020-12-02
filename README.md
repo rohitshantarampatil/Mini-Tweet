@@ -125,3 +125,9 @@ Uncomment lines 53,54,75,76
 cd testing
 sudo python script_exp.py
 ```
+
+## Team Members
+
+Harshil Jain
+Rohit Patil
+Anubhav Jain
