@@ -17,16 +17,18 @@ Mongodb installation required
 To use the program:
 
 ```bash
-in Terminal 1: mongod
-in Terminal 2: python server.py localhost
-in Terminal 3: python client.py localhost
+#in Terminal 1: 
+mongod
+#in Terminal 2: 
+python server.py localhost
+#in Terminal 3: 
+python client.py localhost
 
 ```
-```bash
 
 ## Installing mongodb:
 
-Ibuntu 20.04
+Ubuntu 20.04
 
 ```bash
 wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
