@@ -128,8 +128,8 @@ sudo python script_exp.py
 
 ## Team Members
 
-Harshil Jain
+[Harshil Jain](https://github.com/jain-harshil)
 
-Rohit Patil
+[Rohit Patil](https://github.com/rohitshantarampatil)
 
-Anubhav Jain
+[Anubhav Jain](https://github.com/anubhavj0810)
