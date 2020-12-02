@@ -12,7 +12,7 @@ pip install stdiomask
 pip install termcolor
 ```
 
-Mongodb installation required
+MongoDB installation is required
 
 To use the program:
 
