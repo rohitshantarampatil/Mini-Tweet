@@ -18,15 +18,20 @@ To use the program:
 
 ```bash
 #in Terminal 1: 
+
 mongod
+
 #in Terminal 2: 
+
 python server.py localhost
+
 #in Terminal 3: 
+
 python client.py localhost
 
 ```
 
-## Installing mongodb:
+## Installing MongoDB:
 
 Ubuntu 20.04
 
@@ -48,7 +53,7 @@ sudo apt-get install -y mongodb-org
 ```
 
 
-## Important instructions: 
+## Important Instructions: 
 
 You have to create a database named 'minitweet' in MongoDB
 
@@ -69,15 +74,14 @@ For example:
 
 MongoDB should be running (use sudo mongod command)
 
-In terminal 1: run 
-
 ```bash
+#In terminal 1: run 
+
 python server.py localhost
 ```
-
-In terminal 2: run
-
 ```bash
+#In terminal 2: run
+
 python client.py localhost
 ```
 
@@ -109,7 +113,7 @@ On h2's xterm terminal,
 python client.py 10.0.0.1
 ```
 
-To run application on mininet using python script (mininet library for python, taking stdin input for client using .txt files) 
+To run application on mininet using python script (Mininet library for python, taking stdin input for client using .txt files) 
 
 In client.py,
 (stdiomask library has been used to hide entered password, this library does not work well with stdin input from .txt files)
